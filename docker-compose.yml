@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  edumate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edumate-app
+    image: sathwikkumar/edumate:latest
+    ports:
+      - "5000:5000"
+    volumes:
+      # Mount uploads directory to persist uploaded files
+      - ./uploads:/app/uploads
+    environment:
+      - TRANSFORMERS_OFFLINE=1
+      - FLASK_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
