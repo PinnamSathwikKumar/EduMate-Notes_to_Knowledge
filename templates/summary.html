@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document Summarization - Edumate</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Edumate_Logo.png') }}">
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+      <button id="theme-toggle-btn" class="theme-btn">
+        <i class="fas fa-moon" id="theme-icon"></i>
+      </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <img src="{{ url_for('static', filename='Edumate_Logo.png') }}" alt="Edumate Logo" class="nav-logo">
+          <span>Edumate</span>
+        </div>
+        <div class="nav-links">
+          <a href="/" class="nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+          <a href="/summary" class="nav-link active">
+            <i class="fas fa-file-alt"></i>
+            <span>Summarize</span>
+          </a>
+          <a href="/flashcards" class="nav-link">
+            <i class="fas fa-clone"></i>
+            <span>Flashcards</span>
+          </a>
+          <a href="/keywords" class="nav-link">
+            <i class="fas fa-key"></i>
+            <span>Keywords</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <div class="page-header">
+          <h1 class="page-title">
+            <i class="fas fa-file-alt"></i>
+            Document Summarization
+          </h1>
+          <p class="page-subtitle">
+            Upload your document and generate intelligent summaries in multiple
+            languages
+          </p>
+        </div>
+
+        <div class="content-grid">
+          <!-- Upload Section -->
+          <div class="upload-section">
+            <div class="card">
+              <div class="card-header">
+                <h3>
+                  <i class="fas fa-upload"></i>
+                  Upload Document
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="upload-area" id="upload-area">
+                  <div class="upload-content">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h4>Drop your file here</h4>
+                    <p>or <span class="upload-link">browse to upload</span></p>
+                    <small>Supports PDF, DOCX, TXT files (Max 50MB - Handles large documents up to 300 pages)</small>
+                  </div>
+                  <input
+                    type="file"
+                    id="file-input"
+                    accept=".pdf,.docx,.txt"
+                    hidden
+                  />
+                </div>
+                <div class="file-info" id="file-info" style="display: none">
+                  <div class="file-details">
+                    <i class="fas fa-file"></i>
+                    <div class="file-meta">
+                      <span class="file-name" id="file-name"></span>
+                      <span class="file-size" id="file-size"></span>
+                      <small style="display: block; color: #28a745; margin-top: 5px;">
+                        <i class="fas fa-check-circle"></i> 
+                        This document is available across all pages (Summary, Keywords, Q&A)
+                      </small>
+                    </div>
+                    <button class="btn btn-danger btn-sm" id="remove-file">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Section -->
+          <div class="settings-section">
+            <div class="card">
+              <div class="card-header">
+                <h3>
+                  <i class="fas fa-cog"></i>
+                  Summary Settings
+                </h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="summary-type">
+                    <i class="fas fa-list"></i>
+                    Summary Type
+                  </label>
+                  <select id="summary-type" class="form-control">
+                    <option value="short">Short Summary</option>
+                    <option value="detailed" selected>Detailed Summary</option>
+                    <option value="full">Full Summary</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="language">
+                    <i class="fas fa-globe"></i>
+                    Language
+                  </label>
+                  <select id="language" class="form-control">
+                    <option value="en" selected>English</option>
+                    <option value="hi">Hindi (हिंदी)</option>
+                    <option value="te">Telugu (తెలుగు)</option>
+                  </select>
+                </div>
+                <button
+                  class="btn btn-primary btn-block"
+                  id="generate-summary"
+                  disabled
+                >
+                  <i class="fas fa-magic"></i>
+                  Generate Summary
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results-section" id="results-section" style="display: none">
+          <div class="card">
+            <div class="card-header">
+              <h3>
+                <i class="fas fa-file-alt"></i>
+                Generated Summary
+              </h3>
+              <div class="card-actions">
+                <button class="btn btn-secondary btn-sm" id="copy-summary">
+                  <i class="fas fa-copy"></i>
+                  Copy
+                </button>
+                <button class="btn btn-secondary btn-sm" id="download-summary">
+                  <i class="fas fa-download"></i>
+                  Download
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="summary-meta">
+                <div class="meta-item">
+                  <i class="fas fa-file"></i>
+                  <span id="summary-filename"></span>
+                </div>
+                <div class="meta-item">
+                  <i class="fas fa-list"></i>
+                  <span id="summary-type-display"></span>
+                </div>
+                <div class="meta-item">
+                  <i class="fas fa-globe"></i>
+                  <span id="summary-language-display"></span>
+                </div>
+              </div>
+              <div class="summary-content" id="summary-content">
+                <!-- Summary will be displayed here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Section -->
+        <div class="loading-section" id="loading-section" style="display: none">
+          <div class="card">
+            <div class="card-body text-center">
+              <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+              <h4 id="loading-status">Generating Summary...</h4>
+              <p id="loading-details">Please wait while we process your document</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+    <script>
+      // File upload handling
+      const uploadArea = document.getElementById("upload-area");
+      const fileInput = document.getElementById("file-input");
+      const fileInfo = document.getElementById("file-info");
+      const fileName = document.getElementById("file-name");
+      const fileSize = document.getElementById("file-size");
+      const removeFileBtn = document.getElementById("remove-file");
+      const generateBtn = document.getElementById("generate-summary");
+      const resultsSection = document.getElementById("results-section");
+      const loadingSection = document.getElementById("loading-section");
+
+      let uploadedFile = null;
+      let documentText = "";
+
+      // Upload area click
+      uploadArea.addEventListener("click", () => fileInput.click());
+
+      // File input change
+      fileInput.addEventListener("change", handleFileSelect);
+
+      // Drag and drop
+      uploadArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        uploadArea.classList.add("dragover");
+      });
+
+      uploadArea.addEventListener("dragleave", () => {
+        uploadArea.classList.remove("dragover");
+      });
+
+      uploadArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove("dragover");
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          handleFile(files[0]);
+        }
+      });
+
+      function handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
+          handleFile(file);
+        }
+      }
+
+      function handleFile(file) {
+        // Validate file type
+        const allowedTypes = [
+          "application/pdf",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "text/plain",
+        ];
+        if (!allowedTypes.includes(file.type)) {
+          showToast("Please upload a PDF, DOCX, or TXT file", "error");
+          return;
+        }
+
+        // Validate file size (50MB for large documents)
+        if (file.size > 50 * 1024 * 1024) {
+          showToast("File size must be less than 50MB", "error");
+          return;
+        }
+
+        uploadedFile = file;
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+        uploadArea.style.display = "none";
+        fileInfo.style.display = "block";
+        generateBtn.disabled = false;
+      }
+
+      // On page load, check for a server-stored uploaded document
+      async function checkCurrentDocument() {
+        try {
+          const resp = await fetch("/api/current_document");
+          const data = await resp.json();
+          if (data.success && data.filename) {
+            documentText = data.full_text || "";
+            fileName.textContent = data.filename;
+            fileSize.textContent = "";
+            uploadArea.style.display = "none";
+            fileInfo.style.display = "block";
+            generateBtn.disabled = false;
+          }
+        } catch (e) {
+          console.warn("Could not get current document", e);
+        }
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
+
+      // Remove file
+      removeFileBtn.addEventListener("click", () => {
+        uploadedFile = null;
+        documentText = "";
+        uploadArea.style.display = "block";
+        fileInfo.style.display = "none";
+        generateBtn.disabled = true;
+        resultsSection.style.display = "none";
+        fileInput.value = "";
+        // Clear server-stored document
+        fetch("/api/clear_document", { method: "POST" });
+      });
+
+      // Run check on load
+      checkCurrentDocument();
+
+      // Generate summary
+      generateBtn.addEventListener("click", async () => {
+        // Allow generation if we have either a newly selected file or server-stored document text
+        if (!uploadedFile && (!documentText || !documentText.trim())) return;
+
+        let filename = document.getElementById("file-name").textContent || null;
+
+        try {
+          loadingSection.style.display = "block";
+          resultsSection.style.display = "none";
+
+          // If a new file was selected, upload it first; otherwise try to get server-stored document
+          if (uploadedFile) {
+            const formData = new FormData();
+            formData.append("file", uploadedFile);
+
+            // Upload file and get text
+            const uploadResponse = await fetch("/api/upload", {
+              method: "POST",
+              body: formData,
+            });
+
+            const uploadResult = await uploadResponse.json();
+            if (!uploadResult.success) {
+              throw new Error(uploadResult.error || "Upload failed");
+            }
+
+            documentText = uploadResult.full_text;
+            filename = uploadResult.filename || filename;
+          } else {
+            // fetch server stored document in case documentText is stale
+            try {
+              const resp = await fetch("/api/current_document");
+              const data = await resp.json();
+              if (data && data.success && data.filename) {
+                documentText = data.full_text || documentText;
+                filename = data.filename || filename;
+              }
+            } catch (e) {
+              // ignore and continue
+            }
+          }
+
+          if (!documentText || !documentText.trim()) {
+            throw new Error("No document text available for summarization");
+          }
+
+          // Generate summary
+          const summaryType = document.getElementById("summary-type").value;
+          const language = document.getElementById("language").value;
+
+          // Update loading message based on language
+          const loadingStatus = document.getElementById("loading-status");
+          const loadingDetails = document.getElementById("loading-details");
+          if (language !== "en") {
+            loadingStatus.textContent = "Generating Summary...";
+            loadingDetails.textContent = `Generating summary in ${language === "hi" ? "Hindi" : "Telugu"}... This may take a moment.`;
+          } else {
+            loadingStatus.textContent = "Generating Summary...";
+            loadingDetails.textContent = "Please wait while we process your document";
+          }
+
+          const summaryResponse = await fetch("/api/summarize", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              text: documentText,
+              type: summaryType,
+              language: language,
+            }),
+          });
+
+          const summaryResult = await summaryResponse.json();
+          if (!summaryResult.success) {
+            throw new Error(summaryResult.error || "Summarization failed");
+          }
+
+          // Display results
+          displaySummary(
+            summaryResult,
+            filename || "document",
+            summaryResult.summary_type || summaryType,
+            summaryResult.language || language
+          );
+        } catch (error) {
+          showToast("Error: " + error.message, "error");
+        } finally {
+          loadingSection.style.display = "none";
+        }
+      });
+
+      function displaySummary(result, filename, type, language) {
+        document.getElementById("summary-filename").textContent = filename;
+        document.getElementById("summary-type-display").textContent =
+          type.charAt(0).toUpperCase() + type.slice(1) + " Summary";
+        document.getElementById("summary-language-display").textContent =
+          language === "en"
+            ? "English"
+            : language === "hi"
+            ? "Hindi"
+            : "Telugu";
+        document.getElementById("summary-content").textContent = result.summary;
+
+        resultsSection.style.display = "block";
+      }
+
+      // Copy summary
+      document.getElementById("copy-summary").addEventListener("click", () => {
+        const summaryText =
+          document.getElementById("summary-content").textContent;
+        navigator.clipboard.writeText(summaryText).then(() => {
+          showToast("Summary copied to clipboard!", "success");
+        });
+      });
+
+      // Download summary
+      document
+        .getElementById("download-summary")
+        .addEventListener("click", () => {
+          const summaryText =
+            document.getElementById("summary-content").textContent;
+          const filename =
+            document.getElementById("summary-filename").textContent;
+          const blob = new Blob([summaryText], { type: "text/plain" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename.replace(/\.[^/.]+$/, "") + "_summary.txt";
+          a.click();
+          URL.revokeObjectURL(url);
+          showToast("Summary downloaded!", "success");
+        });
+
+      // Toast notification function
+      function showToast(message, type = "info") {
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.innerHTML = `
+                <i class="fas fa-${
+                  type === "success"
+                    ? "check-circle"
+                    : type === "error"
+                    ? "exclamation-circle"
+                    : "info-circle"
+                }"></i>
+                <span>${message}</span>
+            `;
+
+        document.getElementById("toast-container").appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.add("show");
+        }, 100);
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => {
+            toast.remove();
+          }, 300);
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>

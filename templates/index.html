@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edumate - Notes to Knowledge</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='Edumate_Logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle">
+        <button id="theme-toggle-btn" class="theme-btn">
+            <i class="fas fa-moon" id="theme-icon"></i>
+        </button>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='Edumate_Logo.png') }}" alt="Edumate Logo" class="nav-logo">
+                <span>Edumate</span>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/summary" class="nav-link">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Summarize</span>
+                </a>
+                <a href="/flashcards" class="nav-link">
+                    <i class="fas fa-clone"></i>
+                    <span>Flashcards</span>
+                </a>
+                <a href="/keywords" class="nav-link">
+                    <i class="fas fa-key"></i>
+                    <span>Keywords</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="gradient-text">Notes to Knowledge</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Transform your documents into actionable insights with AI-powered analysis, 
+                    multilingual support, and offline capabilities.
+                </p>
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <i class="fas fa-brain"></i>
+                        <span>AI-Powered</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-globe"></i>
+                        <span>Multilingual</span>
+                    </div>
+                    <div class="feature-item">
+                        <!-- Offline-ready icon matching the style of other feature icons -->
+                        <i class="fas fa-plug-circle-xmark"></i>
+                        <span>Offline Ready</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="/summary" class="btn btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Get Started
+                    </a>
+                    <a href="#footer" class="btn btn-secondary">
+                        <i class="fas fa-info-circle"></i>
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <!-- Top card (centered using offset column) - Summary -->
+                <div class="floating-column floating-column-offset">
+                    <div class="floating-card">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Smart summaries</span>
+                    </div>
+                </div>
+                <!-- Bottom row forming an inverted triangle -->
+                <div class="floating-column">
+                    <div class="floating-card">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>PDF Analysis</span>
+                    </div>
+                    <div class="floating-card">
+                        <i class="fas fa-language"></i>
+                        <span>Multi-Language</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Document Summarization</h3>
+                    <p>Generate short, detailed, or full summaries with intelligent AI processing</p>
+                    <ul class="feature-list">
+                        <li>Short summary</li>
+                        <li>Detailed summary</li>
+                        <li>Full summary</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Multilingual Support</h3>
+                    <p>Process documents and generate summaries in multiple languages</p>
+                    <ul class="feature-list">
+                        <li>English (EN)</li>
+                        <li>Hindi (HI)</li>
+                        <li>Telugu (TE)</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clone"></i>
+                    </div>
+                    <h3>Flashcard Generation</h3>
+                    <p>Generate interactive flashcards from your documents for effective learning</p>
+                    <ul class="feature-list">
+                        <li>Question & Answer cards</li>
+                        <li>Multiple Choice questions</li>
+                        <li>Fill in the Blanks</li>
+                    </ul>
+                </div>
+
+                <!-- Replaced Voice Interaction card with Offline Ready feature card -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-plug-circle-xmark"></i>
+                    </div>
+                    <h3>Offline Ready</h3>
+                    <p>Run summarization and analysis completely offline on your device</p>
+                    <ul class="feature-list">
+                        <li>Local ML models (no cloud required)</li>
+                        <li>Secure document processing</li>
+                        <li>Consistent performance without internet</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h3>Keyword Extraction</h3>
+                    <p>Automatically identify and highlight key phrases in documents</p>
+                    <ul class="feature-list">
+                        <li>Smart keyword detection</li>
+                        <li>Relevance scoring</li>
+                        <li>Visual highlighting</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Modern UI</h3>
+                    <p>Beautiful glassmorphic design with dark and light themes</p>
+                    <ul class="feature-list">
+                        <li>Glassmorphism effects</li>
+                        <li>Dark/Light mode toggle</li>
+                        <li>Responsive design</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Upload Document</h3>
+                        <p>Upload your PDF, DOCX, or TXT files to get started</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Choose Analysis</h3>
+                        <p>Select from summarization, Flashcards, or keyword extraction</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Get Results</h3>
+                        <p>Receive intelligent insights and analysis instantly</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Edumate - Notes to Knowledge</span>
+                </div>
+                <p class="footer-text">
+                    Transforming documents into knowledge with AI-powered analysis.
+                </p>
+                <div class="footer-links">
+                    <a href="/privacy" class="footer-link" target="_blank" rel="noopener">Privacy Policy</a>
+                    <a href="/terms" class="footer-link" target="_blank" rel="noopener">Terms of Service</a>
+                    <a href="https://github.com/PinnamSathwikKumar" target="_blank" rel="noopener" class="footer-link">Support</a>
+                </div>
+                <p class="footer-text">
+                    &copy; 2026 Edumate. Made in JNTUH University College of Engineering Wanaparthy.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/theme-toggle.js') }}"></script>
+</body>
+</html>
+
